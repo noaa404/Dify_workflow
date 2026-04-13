@@ -4,7 +4,7 @@ Qwen3-ASR 一键安装脚本
 Qwen3-ASR-1.7B/Qwen3-ASR-0.6B 
 
 https://huggingface.co/Qwen/Qwen3-ASR-0.6B
-
+https://www.text-to-speech.cn/
 
 """
 
