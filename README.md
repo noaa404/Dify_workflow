@@ -31,8 +31,8 @@ CLI-Anything -> Dify
 ├── install.py                         # Qwen3-ASR-0.6B 安装程序
 ├── dify-workflow-cli-install.py       # Dify Workflow CLI 安装程序
 ├── images                        # 项目图片资源
-├── RAGFLOW_SETUP.md                   # RAGFlow 配置文档
-├── .gitignore                         # Git 忽略配置
+├── RAGFLOW_SETUP.md                   # RAGFlow 安装
+├── .gitignore   
 ├── dify-workflow-cli/                 # Dify Workflow CLI 源码
 │   └── agent-harness/                 # Agent Harness 包装器
 │       ├── setup.py                   # 包安装配置
@@ -49,7 +49,8 @@ CLI-Anything -> Dify
 
 ## 安装说明
 
-### Qwen3-ASR-0.6B
+### Qwen3-ASR-0.6B（
+ASR模型
 
 | 属性   | 信息                                           |
 | ---- | -------------------------------------------- |
@@ -70,6 +71,7 @@ python install.py
 | Setup | [RAGFLOW\_SETUP.md](./RAGFLOW_SETUP.md) |
 
 ### Dify Workflow CLI
+dify cli化，使用ai进行dify工作流迭代
 
 | 属性               | 信息                                                                            |
 | ---------------- | ----------------------------------------------------------------------------- |
