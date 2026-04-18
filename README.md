@@ -12,8 +12,6 @@
   - [Qwen3-ASR-0.6B](#qwen3-asr-06b)
   - [ragflow](#ragflow)
   - [Dify Workflow CLI](#dify-workflow-cli)
-- [使用指南](#使用指南)
-- [技术栈](#技术栈)
 
 ***
 
