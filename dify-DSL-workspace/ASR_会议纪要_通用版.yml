@@ -1,0 +1,358 @@
+app:
+  description: '将会议录音转换为结构化会议纪要'
+  icon: 🎤
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: ASR_会议纪要
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/zhipuai:0.0.24@e0c0e5847fb5f51c3a4620933dc25f6014ed2c8b754fe9ba634d3cc333951bb1
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: '请上传会议录音文件，我将为您生成结构化的会议纪要。'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: tool
+      id: 1776078177153-source-1776078203754-target
+      source: '1776078177153'
+      sourceHandle: source
+      target: '1776078203754'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1776079162454-source-1776079554804-target
+      source: '1776079162454'
+      sourceHandle: source
+      target: '1776079554804'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: tool
+        targetType: code
+      id: 1776078203754-source-1776079977003-target
+      source: '1776078203754'
+      sourceHandle: source
+      target: '1776079977003'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: 1776079977003-source-1776079162454-target
+      source: '1776079977003'
+      sourceHandle: source
+      target: '1776079162454'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 用户输入
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - audio
+          allowed_file_upload_methods:
+          - local_file
+          default: ''
+          hint: '支持 mp3, wav, m4a 等常见音频格式'
+          label: audio_file
+          max_length: 5
+          options: []
+          placeholder: ''
+          required: true
+          type: file
+          variable: audio_file
+      height: 109
+      id: '1776078177153'
+      position:
+        x: 70
+        y: 282
+      positionAbsolute:
+        x: 70
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_team_authorization: true
+        paramSchemas:
+        - auto_generate: null
+          default: null
+          form: llm
+          human_description:
+            en_US: The audio file to be converted.
+            ja_JP: The audio file to be converted.
+            pt_BR: The audio file to be converted.
+            zh_Hans: 要转换的音频文件。
+          label:
+            en_US: Audio File
+            ja_JP: Audio File
+            pt_BR: Audio File
+            zh_Hans: 音频文件
+          llm_description: The audio file to be converted.
+          max: null
+          min: null
+          name: audio_file
+          options: []
+          placeholder: null
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: file
+        - auto_generate: null
+          default: null
+          form: form
+          human_description:
+            en_US: Select an ASR model from your configured models
+            ja_JP: Select an ASR model from your configured models
+            pt_BR: Select an ASR model from your configured models
+            zh_Hans: 从已配置的模型中选择ASR模型
+          label:
+            en_US: Model
+            ja_JP: Model
+            pt_BR: Model
+            zh_Hans: 语音识别模型
+          llm_description: null
+          max: null
+          min: null
+          name: model
+          options: []
+          placeholder: '请在Dify设置中配置ASR模型后使用'
+          precision: null
+          required: true
+          scope: null
+          template: null
+          type: select
+        params:
+          audio_file: ''
+          model: ''
+        plugin_id: null
+        plugin_unique_identifier: ''
+        provider_icon: /console/api/workspaces/current/tool-provider/builtin/audio/icon
+        provider_id: audio
+        provider_name: audio
+        provider_type: builtin
+        selected: false
+        title: 语音转文字
+        tool_configurations: {}
+        tool_description: 将音频文件转换为文本。
+        tool_label: Speech To Text
+        tool_name: asr
+        tool_node_version: '2'
+        tool_parameters:
+          audio_file:
+            type: variable
+            value:
+            - '1776078177153'
+            - audio_file
+          model:
+            type: constant
+            value: ''
+        type: tool
+      height: 88
+      id: '1776078203754'
+      position:
+        x: 326
+        y: 303
+      positionAbsolute:
+        x: 326
+        y: 303
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: true
+          variable_selector:
+          - '1776079977003'
+          - result
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gpt-4o-mini
+          provider: openai
+        prompt_template:
+        - id: 3e1d0bd2-f519-4994-9615-68bb36fd1de6
+          role: system
+          text: '{{#1776079977003.result#}}'
+        - id: 65527b5d-8cc6-4486-9d5e-e666e4de8b7b
+          role: user
+          text: '# 你是专业的会议纪要撰写员。请将会议录音转写文本整理为格式规范的会议纪要，包含：
+
+            1. 会议基本信息（时间、地点、主持人、参会人员）
+
+            2. 会议议题
+
+            3. 讨论内容摘要
+
+            4. 决议事项
+
+            5. 待办任务（责任人+完成时限）
+
+            # 要求：
+
+            - 使用第三人称客观叙述
+
+            - 重要决策需标注【决议】
+
+            - 待办事项需标注【待办】'
+        selected: true
+        structured_output_enabled: false
+        title: LLM生成纪要
+        type: llm
+        vision:
+          enabled: false
+      height: 88
+      id: '1776079162454'
+      position:
+        x: 849
+        y: 303
+      positionAbsolute:
+        x: 849
+        y: 303
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1776079162454'
+          - text
+          value_type: string
+          variable: text
+        selected: false
+        title: 输出
+        type: end
+      height: 88
+      id: '1776079554804'
+      position:
+        x: 1137
+        y: 399
+      positionAbsolute:
+        x: 1137
+        y: 399
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re\n\ndef main(text: str) -> dict:\n    \"\"\"\n    输入变量: text\
+          \ (来自 SPEECH TO TEXT 节点的输出)\n    输出变量: result (清理后的纯文本)\n    \"\"\"\n  \
+          \  # 删除所有 language Chinese<asr_text> 标记\n    clean_text = re.sub(r'language\
+          \ Chinese<asr_text>', '', text)\n    \n    # 删除开头可能残留的 language Chinese\n\
+          \    clean_text = re.sub(r'^language Chinese', '', clean_text)\n    \n \
+          \   # 清理多余空格\n    clean_text = clean_text.strip()\n    \n    return {\n\
+          \        \"result\": clean_text\n    }"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: 文本清理
+        type: code
+        variables:
+        - value_selector:
+          - '1776078203754'
+          - text
+          value_type: string
+          variable: text
+      height: 52
+      id: '1776079977003'
+      position:
+        x: 579
+        y: 303
+      positionAbsolute:
+        x: 579
+        y: 303
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -106
+      y: -67
+      zoom: 0.87
+  rag_pipeline_variables: []

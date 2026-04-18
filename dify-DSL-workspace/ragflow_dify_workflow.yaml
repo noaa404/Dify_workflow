@@ -1,0 +1,231 @@
+version: 0.6.0
+kind: app
+app:
+  name: RAGFlow Dify 融合工作流
+  mode: workflow
+  icon: 🔍
+  icon_type: emoji
+  icon_background: '#E6F4FF'
+  description: '集成 RAGFlow 检索能力的 Dify 工作流'
+  use_icon_as_answer_icon: false
+workflow:
+  graph:
+    nodes:
+    - id: start_node
+      type: custom
+      data:
+        type: start
+        title: 开始
+        desc: ''
+        selected: false
+        variables:
+        - variable: query
+          label: 用户问题
+          type: text-input
+          required: true
+          options: []
+          value_selector: []
+      position:
+        x: 30.0
+        y: 252.0
+      positionAbsolute:
+        x: 30.0
+        y: 252.0
+      width: 244
+      height: 90
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+
+    - id: ragflow_retrieval_node
+      type: custom
+      data:
+        type: http-request
+        title: RAGFlow检索
+        desc: '调用 RAGFlow API 进行知识检索'
+        selected: false
+        retry_config:
+          enabled: true
+          max_retries: 3
+          retry_interval: 1000
+          exponential_backoff:
+            enabled: true
+            multiplier: 2
+            max_interval: 10000
+        url: http://localhost:9380/api/v1/retrieval
+        method: post
+        headers: |-
+          {
+            "Authorization": "ragflow-your-api-key",
+            "Content-Type": "application/json"
+          }
+        body:
+          type: raw-text
+          data:
+          - key: ''
+            type: text
+            value: |-
+              {
+                "dataset_ids": ["your_dataset_id_here"],
+                "query": "{{#start_node.query#}}",
+                "top_k": 5,
+                "similarity_threshold": 0.5
+              }
+        params: ''
+        authorization:
+          type: no-auth
+          config: null
+        timeout:
+          max_connect_timeout: 10
+          max_read_timeout: 60
+          max_write_timeout: 10
+        ssl_verify: true
+      position:
+        x: 334.0
+        y: 252.0
+      positionAbsolute:
+        x: 334.0
+        y: 252.0
+      width: 244
+      height: 90
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+
+    - id: llm_node
+      type: custom
+      data:
+        type: llm
+        title: 大模型生成
+        desc: '基于 RAGFlow 检索结果生成回答'
+        selected: false
+        model:
+          provider: openai
+          name: gpt-4o
+          mode: chat
+          completion_params:
+            temperature: 0.7
+            max_tokens: 2000
+        prompt_template:
+        - role: system
+          text: |-
+            你是一个基于知识库回答问题的 AI 助手。
+            请根据提供的检索结果，准确、简洁地回答用户问题。
+            如果检索结果中没有相关信息，请明确告知用户。
+        - role: user
+          text: |-
+            ## 检索结果
+            {{#ragflow_retrieval_node.body#}}
+
+            ## 用户问题
+            {{#start_node.query#}}
+
+            请基于以上检索结果回答用户问题。
+        vision:
+          enabled: false
+          configs:
+            variable_selector: []
+        memory:
+          enabled: false
+          window:
+            enabled: false
+            size: 50
+        context:
+          enabled: false
+          variable_selector: []
+        structured_output:
+          enabled: false
+        retry_config:
+          enabled: false
+          max_retries: 1
+          retry_interval: 1000
+          exponential_backoff:
+            enabled: false
+            multiplier: 2
+            max_interval: 10000
+      position:
+        x: 638.0
+        y: 252.0
+      positionAbsolute:
+        x: 638.0
+        y: 252.0
+      width: 244
+      height: 90
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+
+    - id: end_node
+      type: custom
+      data:
+        type: end
+        title: 结束
+        desc: ''
+        selected: false
+        outputs:
+        - variable: answer
+          value_selector:
+          - llm_node
+          - text
+          value_type: string
+      position:
+        x: 942.0
+        y: 252.0
+      positionAbsolute:
+        x: 942.0
+        y: 252.0
+      width: 244
+      height: 90
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+
+    edges:
+    - id: start_to_ragflow
+      source: start_node
+      target: ragflow_retrieval_node
+      sourceHandle: source
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        sourceType: start
+        targetType: http-request
+
+    - id: ragflow_to_llm
+      source: ragflow_retrieval_node
+      target: llm_node
+      sourceHandle: source
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        sourceType: http-request
+        targetType: llm
+
+    - id: llm_to_end
+      source: llm_node
+      target: end_node
+      sourceHandle: source
+      targetHandle: target
+      type: custom
+      zIndex: 0
+      data:
+        sourceType: llm
+        targetType: end
+
+  features:
+    opening_statement: '你好！我是基于 RAGFlow 知识库的 AI 助手。请输入您的问题，我会从知识库中检索相关信息并为您解答。'
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    text_to_speech:
+      enabled: false
+    file_upload:
+      enabled: false
+    citation:
+      enabled: true
+    annotation_reply:
+      enabled: false

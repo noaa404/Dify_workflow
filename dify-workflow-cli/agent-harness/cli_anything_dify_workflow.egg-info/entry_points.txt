@@ -1,0 +1,2 @@
+[console_scripts]
+cli-anything-dify-workflow = cli_anything.dify_workflow.dify_workflow_cli:main
