@@ -47,6 +47,15 @@ CLI-Anything -> Dify
 
 ***
 
+## Dify DSL 工作流
+
+| 工作流 | 文件 |
+| ------ | ---- |
+| ASR 会议纪要通用版 | [ASR_会议纪要_通用版.yml](./dify-DSL-workspace/ASR_会议纪要_通用版.yml) |
+| RAGFlow Dify 工作流 | [ragflow_dify_workflow.yaml](./dify-DSL-workspace/ragflow_dify_workflow.yaml) |
+
+***
+
 ## 安装说明
 
 ### Qwen3-ASR-0.6B
