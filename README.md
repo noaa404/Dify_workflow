@@ -49,7 +49,7 @@ CLI-Anything -> Dify
 
 ## 安装说明
 
-### Qwen3-ASR-0.6B（
+### Qwen3-ASR-0.6B
 ASR模型
 
 | 属性   | 信息                                           |
